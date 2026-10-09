@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { title = "Dame Eugénie" } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <!doctype html>
@@ -19,8 +20,8 @@ const { title = "Dame Eugénie" } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Meow+Script&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
+    <link rel="icon" href={`${baseUrl}/favicon.ico`} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
