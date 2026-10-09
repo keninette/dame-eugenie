@@ -16,30 +16,165 @@ const recipies = (await getCollection("recipies")).sort((first, second) =>
     </header>
 
     {recipies.length > 0 ? (
-      <ul class={styles.list}>
-        {recipies.map((recipe) => (
-          <li class={styles.item}>
-            <a class={styles.link} href={`/recipies/${recipe.id}/`}>
-              <div class={styles.recipeHeading}>
-                <h2 class={styles.recipeTitle}>{recipe.data.title}</h2>
-                <span class={styles.duration}>{recipe.data.duration} min</span>
-              </div>
-              {recipe.data.description && (
-                <p class={styles.description}>{recipe.data.description}</p>
-              )}
-              {recipe.data.tags.length > 0 && (
-                <div class={styles.tags} aria-label="Tags">
-                  {recipe.data.tags.map((tag) => (
-                    <span>#{tag}</span>
-                  ))}
+      <>
+        <div class={styles.search}>
+          <label class={styles.searchLabel} for="recipe-search">
+            Rechercher par recette ou ingrédient
+          </label>
+          <input
+            class={styles.searchInput}
+            id="recipe-search"
+            type="search"
+            placeholder="Ex. tomato, egg…"
+            autocomplete="off"
+            data-recipe-search
+          />
+          <div
+            class={styles.durationFilters}
+            role="group"
+            aria-label="Filter by recipe duration"
+          >
+            <button
+              class={styles.durationFilter}
+              type="button"
+              aria-pressed="true"
+              data-duration-filter="all"
+            >
+              Toutes
+            </button>
+            <button
+              class={styles.durationFilter}
+              type="button"
+              aria-pressed="false"
+              data-duration-filter="20"
+            >
+              ≤ 20 minutes
+            </button>
+            <button
+              class={styles.durationFilter}
+              type="button"
+              aria-pressed="false"
+              data-duration-filter="45"
+            >
+              ≤ 45 minutes
+            </button>
+            <button
+              class={styles.durationFilter}
+              type="button"
+              aria-pressed="false"
+              data-duration-filter="over45"
+            >
+              &gt; 45 minutes
+            </button>
+          </div>
+          <p class={styles.searchStatus} aria-live="polite" data-recipe-status>
+            {recipies.length} {recipies.length === 1 ? "recette" : "recettes"}
+          </p>
+        </div>
+
+        <ul class={styles.list}>
+          {recipies.map((recipe) => (
+            <li
+              class={styles.item}
+              data-recipe-item
+              data-duration={recipe.data.duration}
+              data-search-text={`${recipe.data.title} ${recipe.data.tags.join(" ")}`}
+            >
+              <a class={styles.link} href={`/recipies/${recipe.id}/`}>
+                <div class={styles.recipeHeading}>
+                  <h2 class={styles.recipeTitle}>{recipe.data.title}</h2>
+                  <span class={styles.duration}>
+                    {recipe.data.duration} min
+                  </span>
                 </div>
-              )}
-            </a>
-          </li>
-        ))}
-      </ul>
+                {recipe.data.description && (
+                  <p class={styles.description}>{recipe.data.description}</p>
+                )}
+                {recipe.data.tags.length > 0 && (
+                  <div class={styles.tags} aria-label="Tags">
+                    {recipe.data.tags.map((tag) => (
+                      <span>#{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class={styles.noResults} data-recipe-empty hidden>
+          Aucune recette ne correspond à cette recherche.
+        </p>
+      </>
     ) : (
       <p>No recipes have been added yet.</p>
     )}
   </main>
 </Layout>
+
+<script>
+  const searchInput = document.querySelector<HTMLInputElement>(
+    "[data-recipe-search]",
+  );
+  const recipeItems = Array.from(
+    document.querySelectorAll<HTMLLIElement>("[data-recipe-item]"),
+  );
+  const resultCount = document.querySelector<HTMLElement>(
+    "[data-recipe-status]",
+  );
+  const noResults = document.querySelector<HTMLElement>("[data-recipe-empty]");
+  const durationButtons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-duration-filter]"),
+  );
+  let activeDurationFilter = "all";
+
+  const filterRecipes = () => {
+    const query = searchInput.value.trim().toLocaleLowerCase();
+    let visibleCount = 0;
+
+    for (const item of recipeItems) {
+      const searchableText = item.dataset.searchText?.toLocaleLowerCase() ?? "";
+      const duration = Number(item.dataset.duration);
+      const matchesText = searchableText.includes(query);
+      const matchesDuration =
+        activeDurationFilter === "all" ||
+        (activeDurationFilter === "20" && duration <= 20) ||
+        (activeDurationFilter === "45" && duration <= 45) ||
+        (activeDurationFilter === "over45" && duration > 45);
+      const matches = matchesText && matchesDuration;
+
+      item.hidden = !matches;
+      visibleCount += Number(matches);
+    }
+
+    if (resultCount) {
+      resultCount.textContent = `${visibleCount} ${visibleCount === 1 ? "recette" : "recettes"}`;
+    }
+
+    if (noResults) {
+      noResults.hidden = visibleCount > 0;
+    }
+  };
+
+  searchInput?.addEventListener("input", filterRecipes);
+
+  durationButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedFilter = button.dataset.durationFilter ?? "all";
+      activeDurationFilter =
+        selectedFilter === "all" || activeDurationFilter === selectedFilter
+          ? "all"
+          : selectedFilter;
+
+      durationButtons.forEach((durationButton) => {
+        durationButton.setAttribute(
+          "aria-pressed",
+          String(
+            durationButton.dataset.durationFilter === activeDurationFilter,
+          ),
+        );
+      });
+
+      filterRecipes();
+    });
+  });
+</script>

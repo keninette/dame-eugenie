@@ -18,8 +18,77 @@
   max-width: 38rem;
 }
 
+.search {
+  display: grid;
+  gap: 0.4rem;
+  width: min(100%, 28rem);
+  margin-top: 1.75rem;
+}
+
+.searchLabel {
+  font-size: 0.95rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgb(13 22 37 / 35%);
+  border-radius: 4px;
+  background: rgb(255 255 255 / 35%);
+  color: inherit;
+  font: inherit;
+}
+
+.searchInput:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.durationFilters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: min(100%, 32rem);
+  margin-top: 0.35rem;
+  overflow: hidden;
+  border: 1px solid rgb(13 22 37 / 35%);
+  border-radius: 4px;
+}
+
+.durationFilter {
+  min-width: 0;
+  padding: 0.6rem 0.35rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.durationFilter + .durationFilter {
+  border-left: 1px solid rgb(13 22 37 / 22%);
+}
+
+.durationFilter[aria-pressed="true"] {
+  background: var(--colors-black);
+  color: var(--color-bg);
+}
+
+.durationFilter:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid currentColor;
+  outline-offset: -3px;
+}
+
+.searchStatus {
+  min-height: 1.25rem;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
 .list {
-  margin: 2rem 0 0;
+  margin: 1rem 0 0;
   padding: 0;
   list-style: none;
 }
@@ -61,6 +130,10 @@
 .description {
   max-width: 42rem;
   margin: 0.5rem 0 0;
+}
+
+.noResults {
+  margin-top: 1rem;
 }
 
 .tags {
@@ -122,6 +195,19 @@
 }
 
 @media (max-width: 36rem) {
+  .durationFilters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .durationFilter:nth-child(3) {
+    border-top: 1px solid rgb(13 22 37 / 22%);
+    border-left: 0;
+  }
+
+  .durationFilter:nth-child(4) {
+    border-top: 1px solid rgb(13 22 37 / 22%);
+  }
+
   .recipeHeading {
     align-items: flex-start;
   }
