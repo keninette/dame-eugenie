@@ -10,6 +10,7 @@ const recipies = (await getCollection("recipies")).sort((first, second) =>
 
 <Layout title="Recettes | Dame Eugénie">
   <main class={styles.page}>
+    <a href="/" class={styles.backLink}>← Retour à l'accueil</a>
     <header>
       <h1 class={styles.title}>Recettes</h1>
       <p class={styles.intro}>Des idées simples à préparer et à partager.</p>
