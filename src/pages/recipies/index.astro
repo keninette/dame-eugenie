@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import styles from "./recipe.module.scss";
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const recipies = (await getCollection("recipies")).sort((first, second) =>
   first.data.title.localeCompare(second.data.title),
@@ -10,7 +11,9 @@ const recipies = (await getCollection("recipies")).sort((first, second) =>
 
 <Layout title="Recettes | Dame Eugénie">
   <main class={styles.page}>
-    <a href="/" class={styles.backLink}>← Retour à l'accueil</a>
+    <a href={`${baseUrl}/`} class={styles.backLink}>
+      ← Retour à l'accueil
+    </a>
     <header>
       <h1 class={styles.title}>Recettes</h1>
       <p class={styles.intro}>Des idées simples à préparer et à partager.</p>
@@ -81,7 +84,7 @@ const recipies = (await getCollection("recipies")).sort((first, second) =>
               data-duration={recipe.data.duration}
               data-search-text={`${recipe.data.title} ${recipe.data.tags.join(" ")}`}
             >
-              <a class={styles.link} href={`/recipies/${recipe.id}/`}>
+              <a class={styles.link} href={`${baseUrl}/recipies/${recipe.id}/`}>
                 <div class={styles.recipeHeading}>
                   <h2 class={styles.recipeTitle}>{recipe.data.title}</h2>
                   <span class={styles.duration}>

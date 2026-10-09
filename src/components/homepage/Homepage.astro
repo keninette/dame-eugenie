@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import plant from "../../assets/img/plant.jpg";
 import food from "../../assets/img/food.jpg";
 import styles from "./homepage.module.scss";
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <div>
@@ -22,7 +23,7 @@ import styles from "./homepage.module.scss";
         />
         <p class={styles.homepage__card__text}>Plantes</p>
       </a>
-      <a class={styles.homepage__card} href="/recipies/">
+      <a class={styles.homepage__card} href={`${baseUrl}/recipies/`}>
         <Image
           src={food}
           class={styles.homepage__card__image}

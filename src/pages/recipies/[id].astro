@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import styles from "./recipe.module.scss";
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 export async function getStaticPaths() {
   const recipies = await getCollection("recipies");
@@ -20,7 +21,7 @@ const { Content } = content;
 
 <Layout title={`${recipe.data.title} | Dame Eugénie`}>
   <main class={styles.page}>
-    <a class={styles.backLink} href="/recipies/">
+    <a class={styles.backLink} href={`${baseUrl}/recipies/`}>
       &larr; Toutes les recettes
     </a>
 
