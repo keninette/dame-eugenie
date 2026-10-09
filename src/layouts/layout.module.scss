@@ -1,0 +1,8 @@
+@use "./variables.sys.module.scss";
+
+.layout {
+  &__main {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+}

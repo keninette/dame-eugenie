@@ -1,0 +1,11 @@
+@use "./variables.vars.module.scss";
+
+:root {
+  --color-bg: var(--colors-pink--light);
+  --color-text: var(--colors-black);
+
+  --font--title: var(--fonts-font-family--cursive);
+  --font-size--title: var(--fonts-size--xxl);
+
+  --layout-margin--section: var(--layout-margin);
+}

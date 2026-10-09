@@ -1,0 +1,29 @@
+{
+  "name": "Dame Eugénie",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "prettify": "prettier --plugin prettier-plugin-astro --write ."
+  },
+  "dependencies": {
+    "@astrojs/markdoc": "^2.0.11",
+    "astro": "^7.3.7",
+    "jslint": "^0.12.1",
+    "sass": "^1.105.1"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "devDependencies": {
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.1.0",
+    "typescript": "^7.0.2"
+  }
+}

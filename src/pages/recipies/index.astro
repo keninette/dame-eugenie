@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import styles from "./recipe.module.scss";
+
+const recipies = (await getCollection("recipies")).sort((first, second) =>
+  first.data.title.localeCompare(second.data.title),
+);
+---
+
+<Layout title="Recettes | Dame Eugénie">
+  <main class={styles.page}>
+    <header>
+      <h1 class={styles.title}>Recettes</h1>
+      <p class={styles.intro}>Des idées simples à préparer et à partager.</p>
+    </header>
+
+    {recipies.length > 0 ? (
+      <ul class={styles.list}>
+        {recipies.map((recipe) => (
+          <li class={styles.item}>
+            <a class={styles.link} href={`/recipies/${recipe.id}/`}>
+              <div class={styles.recipeHeading}>
+                <h2 class={styles.recipeTitle}>{recipe.data.title}</h2>
+                <span class={styles.duration}>{recipe.data.duration} min</span>
+              </div>
+              {recipe.data.description && (
+                <p class={styles.description}>{recipe.data.description}</p>
+              )}
+              {recipe.data.tags.length > 0 && (
+                <div class={styles.tags} aria-label="Tags">
+                  {recipe.data.tags.map((tag) => (
+                    <span>#{tag}</span>
+                  ))}
+                </div>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No recipes have been added yet.</p>
+    )}
+  </main>
+</Layout>

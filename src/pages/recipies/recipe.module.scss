@@ -1,0 +1,132 @@
+@use "../../layouts/variables.sys.module.scss";
+
+.page {
+  width: min(100% - 2rem, 58rem);
+  margin-inline: auto;
+  padding-block: 3rem 5rem;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font--title);
+  font-size: var(--font-size--title);
+  line-height: 1;
+}
+
+.intro {
+  margin-block: 0.75rem 0;
+  max-width: 38rem;
+}
+
+.list {
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  border-top: 1px solid rgb(13 22 37 / 22%);
+}
+
+.link {
+  display: block;
+  padding: 1.25rem 0.25rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.link:hover .recipeTitle,
+.link:focus-visible .recipeTitle {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.recipeHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.recipeTitle {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.duration {
+  flex: none;
+  font-size: 0.9rem;
+}
+
+.description {
+  max-width: 42rem;
+  margin: 0.5rem 0 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.8rem;
+  margin-top: 0.75rem;
+  color: rgb(13 22 37 / 72%);
+  font-size: 0.875rem;
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: inherit;
+}
+
+.detailHeader {
+  margin-bottom: 1.5rem;
+}
+
+.picture {
+  display: block;
+  width: min(100%, 38rem);
+  max-height: 28rem;
+  margin-block: 1.5rem;
+  object-fit: cover;
+}
+
+.sectionTitle {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+.ingredients {
+  padding-left: 1.25rem;
+}
+
+.ingredients li + li {
+  margin-top: 0.4rem;
+}
+
+.content {
+  max-width: 42rem;
+  margin-top: 2rem;
+}
+
+.content :global(h2) {
+  margin-top: 2rem;
+  font-size: 1.25rem;
+}
+
+.content :global(ol) {
+  padding-left: 1.25rem;
+}
+
+.content :global(li + li) {
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 36rem) {
+  .recipeHeading {
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+}

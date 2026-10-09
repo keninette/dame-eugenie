@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import styles from "./recipe.module.scss";
+
+export async function getStaticPaths() {
+  const recipies = await getCollection("recipies");
+
+  return Promise.all(
+    recipies.map(async (recipe) => ({
+      params: { id: recipe.id },
+      props: { recipe, content: await render(recipe) },
+    })),
+  );
+}
+
+const { recipe, content } = Astro.props;
+const { Content } = content;
+---
+
+<Layout title={`${recipe.data.title} | Dame Eugénie`}>
+  <main class={styles.page}>
+    <a class={styles.backLink} href="/recipies/">
+      &larr; Toutes les recettes
+    </a>
+
+    <header class={styles.detailHeader}>
+      <h1 class={styles.title}>{recipe.data.title}</h1>
+      {recipe.data.description && (
+        <p class={styles.intro}>{recipe.data.description}</p>
+      )}
+      <p class={styles.duration}>Préparation : {recipe.data.duration} min</p>
+      {recipe.data.tags.length > 0 && (
+        <div class={styles.tags} aria-label="Tags">
+          {recipe.data.tags.map((tag) => (
+            <span>#{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    {recipe.data.picture && (
+      <img
+        class={styles.picture}
+        src={recipe.data.picture}
+        alt={recipe.data.title}
+      />
+    )}
+
+    <section>
+      <h2 class={styles.sectionTitle}>Ingrédients</h2>
+      <ul class={styles.ingredients}>
+        {recipe.data.ingredients.map((ingredient) => (
+          <li>{ingredient}</li>
+        ))}
+      </ul>
+    </section>
+
+    <article class={styles.content}>
+      <Content />
+    </article>
+  </main>
+</Layout>
